@@ -2,28 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Http\Controllers\HomepageController;
 
-Route::get('/', function () {
-    return view('web.homepage');
-});
-Route::get('product', function () {
-    return view('web.product');
-});
-Route::get('product/{slug}', function ($slug) {
-    return view('web.singlle_product');
-});
-Route::get('categoty', function () {
-    return view('web.category');
-});
-Route::get('cart', function () {
-    return view('web.cart');
-});
-Route::get('checkout', function () {
-    return view('web.checkout');
-});
-Route::get('category/{slug}', function ($slug) {
-    return view('web.single_category');
-});
+Route::get('/', [HomepageController::class, 'index']);
+Route::get('product', [HomepageController::class, 'products']);
+Route::get('product/{slug}', [HomepageController::class, 'product']);
+Route::get('categories',[HomepageController::class, 'categories']);
+Route::get('category/{slug}', [HomepageController::class, 'category']);
+Route::get('cart', [HomepageController::class, 'cart']);
+Route::get('checkout', [HomepageController::class, 'checkout']);
+
 
 
 // require __DIR__.'/auth.php';
