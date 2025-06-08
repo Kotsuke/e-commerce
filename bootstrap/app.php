@@ -11,7 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+         $middleware->alias([
+            'check_customer_login' => App\Http\Middleware\CheckCustomerLogin::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
