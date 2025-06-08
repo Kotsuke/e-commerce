@@ -1,3 +1,7 @@
 <x-layout>
-    <h3>Ini adalah halaman kategori berdasarkan slug</h3>
+    <h1>{{ $category['name'] }}</h1>
+    <hr>
+    <p>
+        {{ $category['description'] }}
+    </p>  
 </x-layout>
