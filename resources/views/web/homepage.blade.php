@@ -2,7 +2,7 @@
         <h3>Categories</h3>
         @foreach($categories as $category)
             <div class="col-2">
-                <div class="card">
+                <div class="card" style="height:38vh">
                     <img src="{{ $category['image'] }}" class="card-img-top" alt="...">
                     <div class="card-body">
                       <h5 class="card-title">{{ $category['name'] }}</h5>
