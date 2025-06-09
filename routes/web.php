@@ -7,8 +7,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerAuthController;
-// use App\Http\Controllers\ThemeController;
-
+use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\MenuController;
 // use App\Http\Controllers\OrderController;
 
 use App\Http\Controllers\ApiController;
@@ -53,7 +53,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
 
     Route::resource('categories', ProductCategoryController::class);
     Route::resource('products', ProductController::class);
-    // Route::resource('themes', ThemeController::class);
+    Route::resource('menus', MenuController::class);
+    Route::resource('themes', ThemeController::class);
 });
 
 Route::middleware(['auth:customer'])->group(function () {
