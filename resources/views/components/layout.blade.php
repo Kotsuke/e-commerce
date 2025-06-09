@@ -8,7 +8,7 @@
 </head>
 <body>
   
-   <x-nav   bar></x-navbar>
+   <x-navbar></x-navbar>
 
    <div class="container-fluid py-4">
        {{  $slot }}
