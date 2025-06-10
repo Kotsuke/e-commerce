@@ -46,15 +46,11 @@ class ThemeController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
-        if($request->status === 'active') {
-            Theme::where('status', 'active')->update(['status' => 'inactive']);
-        }
-
         $theme = new Theme();
         $theme->name = $request->name;
         $theme->description = $request->description;
         $theme->folder = $request->folder;
-        $theme->status = $request->has('status') ? 'active' : 'inactive';;
+        $theme->status = $request->status; // langsung dari form
         $theme->save();
 
         return redirect()->route('themes.index')->with('successMessage', 'Theme created successfully.');
@@ -87,15 +83,21 @@ class ThemeController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'folder' => 'required|string|max:255',
-            'status' => 'required|in:active,inactive',
+            'status' => 'required|in:0,1',
         ]);
 
-        if($request->status === 'active') {
-            Theme::where('status', 'active')->update(['status' => 'inactive']);
+        $status = $request->status == '1' ? 'active' : 'inactive';
+        
+        if($status === 'active') {
+            Theme::where('status', 'active')->where('id', '!=', $id)->update(['status' => 'inactive']);
         }
 
         $theme = Theme::findOrFail($id);
-        $theme->update($request->all());
+        $theme->name = $request->name;
+        $theme->description = $request->description;
+        $theme->folder = $request->folder;
+        $theme->status = $status;
+        $theme->save();
 
         return redirect()->route('themes.index')->with('successMessage', 'Theme updated successfully.');
     }

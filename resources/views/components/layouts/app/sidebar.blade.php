@@ -23,6 +23,9 @@
                 <flux:navlist.item icon="list-bullet" :href="route('products.index')"
                     :current="request()->routeIs('products.index')" wire:navigate>{{ __('Products') }}
                 </flux:navlist.item>
+                <flux:navlist.item icon="list-bullet" :href="route('themes.index')"
+                    :current="request()->routeIs('themes.index')" wire:navigate>{{ __('Theme') }}
+                </flux:navlist.item>
             </flux:navlist.group>
             </flux:navlist>
             {{-- navbaring --}}

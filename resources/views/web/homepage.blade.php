@@ -1,5 +1,4 @@
 <x-layout>
-
     <div class="row">
         <h3>Categories</h3>
         @foreach($categories as $category)
