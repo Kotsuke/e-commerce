@@ -9,15 +9,17 @@ use \Binafy\LaravelCart\Models\Cart;
 
 class HomepageController extends Controller
 {
+    private $viewPath = 'web';
+
     public function index()
     {
         $categories = Categories::latest()->take(4)->get();
         $products = Product::paginate(20);
 
-        return view('homepage', [
+        return view($this->viewPath . '.homepage', [
             'categories' => $categories,
             'products' => $products,
-            'title' => 'Homepage',
+            'title' => 'Homepage'
         ]);
     }
 
@@ -33,7 +35,7 @@ class HomepageController extends Controller
 
         $products = $query->paginate(20);
 
-        return view('products', [
+        return view($this->viewPath . '.products', [
             'title' => $title,
             'products' => $products,
         ]);
@@ -52,7 +54,7 @@ class HomepageController extends Controller
             ->take(4)
             ->get();
 
-        return view('product', [
+        return view($this->viewPath . '.product', [
             'slug' => $slug,
             'product' => $product,
             'relatedProducts' => $relatedProducts,
@@ -63,7 +65,7 @@ class HomepageController extends Controller
     {
         $categories = Categories::latest()->paginate(20);
 
-        return view('categories', [
+        return view($this->viewPath . '.categories', [
             'title' => 'Categories',
             'categories' => $categories,
         ]);
@@ -76,7 +78,7 @@ class HomepageController extends Controller
         if ($category) {
             $products = Product::where('product_category_id', $category->id)->paginate(20);
 
-            return view('category_by_slug', [
+            return view($this->viewPath . '.category_by_slug', [
                 'slug' => $slug,
                 'category' => $category,
                 'products' => $products,
@@ -91,12 +93,12 @@ class HomepageController extends Controller
         $cart = Cart::query()
             ->with([
                 'items',
-                'items.itemable',
+                'items.itemable'
             ])
             ->where('user_id', auth()->guard('customer')->user()->id)
             ->first();
 
-        return view('cart', [
+        return view($this->viewPath . '.cart', [
             'title' => 'Cart',
             'cart' => $cart,
         ]);
@@ -104,8 +106,8 @@ class HomepageController extends Controller
 
     public function checkout()
     {
-        return view('checkout', [
-            'title' => 'Checkout',
+        return view($this->viewPath . '.checkout', [
+            'title' => 'Checkout'
         ]);
     }
 }

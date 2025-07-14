@@ -9,8 +9,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\MenuController;
+use App\Http\Controllers\CheckoutController;
+
 use App\Http\Controllers\OrderController;
+
 use App\Http\Controllers\ApiController;
 
 //kode baru diubah menjadi seperti ini
@@ -19,9 +21,9 @@ Route::get('products', [HomepageController::class, 'products'])->name('products'
 Route::get('product/{slug}', [HomepageController::class, 'product'])->name('product.show');
 Route::get('categories',[HomepageController::class, 'categories']);
 Route::get('category/{slug}', [HomepageController::class, 'category']);
+
 Route::get('cart', [HomepageController::class, 'cart'])->name('cart.index');
 Route::get('checkout', [HomepageController::class, 'checkout'])->name('checkout.index');
-Route::get('/menus', [MenuController::class, 'index'])->name('menus.index');
 
 Route::group(['middleware'=>['is_customer_login']], function(){
     Route::controller(CartController::class)->group(function () {
@@ -30,6 +32,11 @@ Route::group(['middleware'=>['is_customer_login']], function(){
         Route::patch('cart/update/{id}', 'update')->name('cart.update');
     });
 });
+
+    Route::group(['middleware' => ['is_customer_login']], function () {
+        Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+        Route::post('checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    });
 
 Route::group(['prefix'=>'customer'], function(){
     Route::controller(CustomerAuthController::class)->group(function(){
