@@ -24,7 +24,10 @@
                     :current="request()->routeIs('products.index')" wire:navigate>{{ __('Products') }}
                 </flux:navlist.item>
                 <flux:navlist.item icon="list-bullet" :href="route('themes.index')"
-                    :current="request()->routeIs('themes.index')" wire:navigate>{{ __('Theme') }}
+                    :current="request()->routeIs('themes.index')" wire:navigate>{{ __('Themes') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="list-bullet" :href="route('menus.index')"
+                    :current="request()->routeIs('menus.index')" wire:navigate>{{ __('Menus') }}
                 </flux:navlist.item>
             </flux:navlist.group>
             </flux:navlist>

@@ -7,106 +7,66 @@
 
     <div class="flex justify-between items-center mb-4">
         <div>
-             <form action="{{ route('products.index') }}" method="get">
+            <form action="{{ route('products.index') }}" method="get">
                 @csrf
                 <flux:input icon="magnifying-glass" name="q" value="{{ $q }}" placeholder="Search Products" />
             </form>
         </div>
         <div>
-            <flux:button icon="plus">
-                <flux:link href="{{ route('products.create') }}" variant="subtle">Add New Product</flux:link>
+            <flux:button as="a" href="{{ route('products.create') }}" icon="plus" variant="subtle">
+                Add New Product
             </flux:button>
         </div>
     </div>
-@if(session()->has('successMessage'))Add commentMore actions
-        <flux:badge color="lime" class="mb-3 w-full">{{session()->get('successMessage')}}</flux:badge>
+
+    @if(session()->has('successMessage'))
+        <flux:badge color="lime" class="mb-3 w-full">{{ session()->get('successMessage') }}</flux:badge>
     @endif
 
     <div class="overflow-x-auto">
         <table class="min-w-full leading-normal">
             <thead>
                 <tr>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        ID
-                    </th>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Image
-                    </th>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Name
-                    </th>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Category
-                    </th>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        SKU
-                    </th>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        PRICE
-                    </th>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Active
-                    </th>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Created At
-                    </th>
-                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Actions
-                    </th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Image</th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Category</th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Price</th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Created At</th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($products as $key=>$product)
+                @foreach($products as $key => $product)
                     <tr>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $key+1 }}
-                            </p>
+                            {{ $loop->iteration }}
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">
-                                @if($product->image_url)
-                                    <img src="{{ Storage::url($product->image_url) }}" alt="{{ $product->name }}" class="h-10 w-10 object-cover rounded">
-                                @else
-                                    <div class="h-10 w-10 bg-gray-200 flex items-center justify-center rounded">
-                                        <span class="text-gray-500 text-sm">N/A</span>
-                                    </div>
-                                @endif
-                            </p>
+                            @if($product->image_url)
+                                <img src="{{ Storage::url($product->image_url) }}" alt="{{ $product->name }}" class="h-10 w-10 object-cover rounded">
+                            @else
+                                <div class="h-10 w-10 bg-gray-200 flex items-center justify-center rounded">
+                                    <span class="text-gray-500 text-sm">N/A</span>
+                                </div>
+                            @endif
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $product->name }}
-                            </p>
+                            {{ $product->name }}
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $product->category ? $product->category->name : 'N/A' }}
-                            </p>
+                            {{ $product->category->name ?? 'Uncategorized' }}
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $product->sku }}
-                            </p>
+                            $ {{ number_format($product->price, 2) }}
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $product->price }}
-                            </p>
-                        </td>
-                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $product->is_active ? 'Yes' : 'No' }}
-                            </p>
-                        </td>
-                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $product->created_at }}
-                            </p>
+                            {{ $product->created_at->format('d M Y') }}
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                             <flux:dropdown>
                                 <flux:button icon:trailing="chevron-down">Actions</flux:button>
+
                                 <flux:menu>
                                     <flux:menu.item icon="pencil" href="{{ route('products.edit', $product->id) }}">Edit</flux:menu.item>
                                     <flux:menu.item icon="trash" variant="danger" onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this product?')) document.getElementById('delete-form-{{ $product->id }}').submit();">Delete</flux:menu.item>
@@ -123,7 +83,7 @@
         </table>
 
         <div class="mt-3">
-            {{ $products->links() }}
+            {{ $products->appends(['q' => request()->q])->links() }}
         </div>
     </div>
 </x-layouts.app>
