@@ -13,12 +13,12 @@ class MenuController extends Controller
     public function index()
     {
         $menus = Menu::orderBy('menu_order')->get();
-        return view('menus.index', compact('menus'));
+        return view('dashboard.menus.index', compact('menus'));
     }
 
     public function create()
     {
-        return view('menus.create');
+        return view('dashboard.menus.create');
     }
 
     public function store(Request $request)
@@ -38,12 +38,12 @@ class MenuController extends Controller
 
     public function show(Menu $menu)
     {
-        return view('menus.show', compact('menu'));
+        return view('dashboard.menus.show', compact('menu'));
     }
 
     public function edit(Menu $menu)
     {
-        return view('menus.edit', compact('menu'));
+        return view('dashboard.menus.edit', compact('menu'));
     }
 
     public function update(Request $request, Menu $menu)
