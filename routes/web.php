@@ -14,6 +14,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\ApiController;
 
+
 //kode baru diubah menjadi seperti ini
 Route::get('/', [HomepageController::class, 'index'])->name('home');
 Route::get('products', [HomepageController::class, 'products'])->name('products');
@@ -23,7 +24,8 @@ Route::get('category/{slug}', [HomepageController::class, 'category']);
 Route::get('cart', [HomepageController::class, 'cart'])->name('cart.index');
 Route::get('checkout', [HomepageController::class, 'checkout'])->name('checkout.index');
 Route::get('/menus', [MenuController::class, 'index'])->name('menus.index');
-
+Route::post('products/sync/{id}', [ProductController::class, 'sync'])->name('products.sync');
+Route::post('category/sync/{id}', [ProductCategoryController::class, 'sync'])->name('category.sync');
 
 Route::group(['middleware'=>['is_customer_login']], function(){
     Route::controller(CartController::class)->group(function () {
