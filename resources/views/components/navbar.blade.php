@@ -13,16 +13,19 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/categories">Categories</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cart">Cart</a>
+                    </li>
                 </ul>
                 
                 <form class="d-flex me-3" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <button class="btn-primary btn-outline-success" type="submit">Search</button>
                 </form>
 
                 @if(auth()->guard('customer')->check())
-                    <div class="dropdown">
-                        <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="dropdown d-flex me-3">
+                        <a class="btn-primary btn-outline-secondary dropdown-toggle text-dark" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ Auth::guard('customer')->user()->name }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
