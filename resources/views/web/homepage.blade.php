@@ -33,17 +33,18 @@
         <div class="row">
             @forelse($products as $product)
                 <div class="col-md-3 mb-4">
-                    <div class="card product-card h-100 shadow-sm">
-                        <img src="{{ Storage::url($product->image_url) }}" alt="{{ $product->name }}" class="card-img-top" style="height: 200px; object-fit: contain;">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ $product->name }}</h5>
-                            <p class="card-text text-truncate">{{ $product->description }}</p>
-                            <div class="mt-auto">
-                                <span class="fw-bold text-primary">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
-                                <a href="{{ route('product.show', $product->slug) }}" class="btn btn-outline-primary btn-sm float-end">Lihat Detail</a>
+                    <a href="{{ route('product.show', $product->slug) }}" class="text-decoration-none text-dark">
+                        <div class="card product-card h-100 shadow-sm">
+                            <img src="{{ Storage::url($product->image_url) }}" alt="{{ $product->name }}" class="card-img-top" style="height: 200px; object-fit: contain;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{{ $product->name }}</h5>
+                                <p class="card-text text-truncate">{{ $product->description }}</p>
+                                <div class="mt-auto">
+                                    <span class="fw-bold text-primary">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             @empty
                 <div class="col">

@@ -11,9 +11,7 @@ use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\MenuController;
-
-use App\Http\Controllers\OrderController;
-
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\ApiController;
 
 //kode baru diubah menjadi seperti ini
@@ -63,7 +61,9 @@ Route::group(['prefix'=>'customer'], function(){
     });
 });
 
-
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+});
 
 Route::group(['prefix'=>'dashboard','middleware'=>['auth','verified']], function(){
     Route::get('/',[DashboardController::class,'index'])->name('dashboard');

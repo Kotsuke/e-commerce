@@ -58,7 +58,7 @@
                             {{ $product->category->name ?? 'Uncategorized' }}
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            $ {{ number_format($product->price, 2) }}
+                            Rp {{ number_format($product->price, 2) }}
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                             {{ $product->created_at->format('d M Y') }}
