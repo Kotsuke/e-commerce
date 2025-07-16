@@ -2,5 +2,4 @@
 /storage/pail
 /node_modules
 /vendor
-.env
 /.git
