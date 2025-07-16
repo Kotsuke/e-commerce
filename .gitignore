@@ -3,5 +3,5 @@
 /storage/pail
 /node_modules
 /vendor
-/.env
+.env
 /.git
