@@ -12,7 +12,7 @@
                     <a href="{{ URL::to('/category/'.$category->slug) }}" class="card text-decoration-none">
                         <div class="card category-card text-center h-100 py-3 border-0 shadow-sm">
                             <div class="mx-auto mb-2" style="width:64px;height:64px;display:flex;align-items:center;justify-content:center;background:#f8f9fa;border-radius:50%;">
-                                <img src="{{ Storage::url($category->image) }}" alt="{{ $category->name }}" style="width:36px;height:36px;object-fit:contain;">
+                                <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width:36px;height:36px;object-fit:contain;">
                             </div>
                             <div class="card-body p-2">
                                 <h6 class="card-title mb-1 text-dark">{{ $category->name }}</h6>
@@ -35,7 +35,7 @@
                 <div class="col-md-3 mb-4">
                     <a href="{{ route('product.show', $product->slug) }}" class="text-decoration-none text-dark">
                         <div class="card product-card h-100 shadow-sm">
-                            <img src="{{ Storage::url($product->image_url) }}" alt="{{ $product->name }}" class="card-img-top" style="height: 200px; object-fit: contain;">
+                            <img src="{{ asset('storage/' . $product->img_url) }}" alt="{{ $product->name }}" class="card-img-top" style="height: 200px; object-fit: contain;">
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title">{{ $product->name }}</h5>
                                 <p class="card-text text-truncate">{{ $product->description }}</p>
