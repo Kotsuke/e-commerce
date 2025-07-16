@@ -35,7 +35,7 @@
                 <div class="col-md-3 mb-4">
                     <a href="{{ route('product.show', $product->slug) }}" class="text-decoration-none text-dark">
                         <div class="card product-card h-100 shadow-sm">
-                            <img src="{{ asset('storage/' . $product->img_url) }}" alt="{{ $product->name }}" class="card-img-top" style="height: 200px; object-fit: contain;">
+                            <img src="{{ Storage::url($product->image_url) }}" alt="{{ $product->name }}" class="card-img-top" style="height: 200px; object-fit: contain;">
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title">{{ $product->name }}</h5>
                                 <p class="card-text text-truncate">{{ $product->description }}</p>
