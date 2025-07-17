@@ -162,23 +162,53 @@ class ProductCategoryController extends Controller
     {
         $category = Categories::findOrFail($id);
 
-        $response = Http::post('https://api.phb-umkm.my.id/api/product-category/sync', [
+        $payload = [
             'client_id' => env('CLIENT_ID'),
             'client_secret' => env('CLIENT_SECRET'),
             'seller_product_category_id' => (string) $category->id,
             'name' => $category->name,
             'slug' => $category->slug,
             'description' => $category->description,
-            'image' => $category->image,
+            'image' => asset('storage/' . $category->image),
             'is_active' => $request->is_active == 1 ? false : true,
-        ]);
+        ];
 
-        if ($response->successful() && isset($response['product_category_id'])) {
-            $category->hub_category_id = $request->is_active == 1 ? null : $response['product_category_id'];
-            $category->save();
+        // Log payload yang dikirim
+        Log::info('Sending category sync request', $payload);
+
+        try {
+            $response = Http::post('https://api.phb-umkm.my.id/api/product-category/sync', $payload);
+
+            // Log response dari server
+            Log::info('Response from sync API', [
+                'status' => $response->status(),
+                'body' => $response->json()
+            ]);
+
+            if ($response->successful() && isset($response['product_category_id'])) {
+                $category->hub_category_id = $request->is_active == 1 ? null : $response['product_category_id'];
+                $category->save();
+
+                session()->flash('successMessage', 'Category Synced Successfully');
+            } else {
+                // Log error jika tidak sukses
+                Log::error('Sync failed with response', [
+                    'status' => $response->status(),
+                    'body' => $response->json()
+                ]);
+
+                session()->flash('errorMessage', 'Sync failed. Please check logs.');
+            }
+        } catch (\Exception $e) {
+            // Log jika terjadi exception seperti koneksi gagal
+            Log::error('Exception during category sync', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            session()->flash('errorMessage', 'Sync failed with exception.');
         }
 
-        session()->flash('successMessage', 'Category Synced Successfully');
         return redirect()->back();
     }
 }
