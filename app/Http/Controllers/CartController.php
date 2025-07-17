@@ -12,7 +12,15 @@ class CartController extends Controller
     private $cart;
 
     public function __construct(){
-        $this->cart = Cart::query()->firstOrCreate(['user_id' => auth()->guard('customer')->user()->id]);
+        $user = auth()->guard('customer')->user();
+
+        if (!$user) {
+            abort(403, 'You must be logged in.');
+        }
+
+        $this->cart = Cart::query()->firstOrCreate([
+            'user_id' => $user->id,
+        ]);
     }
 
     public function add(Request $request)
@@ -32,7 +40,7 @@ class CartController extends Controller
 
         // Find the product
         $product = Product::findOrFail($request->product_id);
-        
+
         // Check if the product is available
         if ($product->stock < $request->quantity) {
             return redirect()->back()->with('error', 'Insufficient stock for this product.');
@@ -70,7 +78,7 @@ class CartController extends Controller
         }else if($request->action == 'increase'){
             $this->cart->increaseQuantity(item: $product);
         }
-        
+
         return redirect()->route('cart.index')->with('success', 'Cart updated successfully.');
     }
 }
