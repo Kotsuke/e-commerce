@@ -31,7 +31,7 @@
                         <div class="card category-card text-center h-100 border-0 shadow-sm">
                             <div class="card-body">
                                 <div class="category-icon-wrapper">
-                                    <img src="{{ Storage::url($category->image) }}" alt="{{ $category->name }}" style="width:36px;height:36px;object-fit:contain;">
+                                    <img src="{{ Storage::url($category->image) }}" alt="{{ $category->name }}">
                                 </div>
                                 <h6 class="card-title">{{ $category->name }}</h6>
                                 <p class="card-text text-muted small">{{ Str::limit($category->description, 50) }}</p>
