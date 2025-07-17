@@ -28,7 +28,7 @@
                     <a href="{{ URL::to('/category/'.$category->slug) }}" class="card text-decoration-none">
                         <div class="card category-card text-center h-100 py-3 border-0 shadow-sm">
                             <div class="mx-auto mb-2" style="width:64px;height:64px;display:flex;align-items:center;justify-content:center;background:
-#f8f9fa;border-radius:50%;">
+                                #f8f9fa;border-radius:50%;">
                                 <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width:36px;height:36px;object-fit:contain;">
                             </div>
                             <div class="card-body p-2">
