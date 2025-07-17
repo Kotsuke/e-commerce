@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use App\Models\Categories;
+use Illuminate\Support\Facades\Log;
+
 class ProductCategoryController extends Controller
 {
     /**
