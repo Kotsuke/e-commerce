@@ -153,28 +153,82 @@ class ProductCategoryController extends Controller
                     'successMessage'=>'Data Berhasil Dihapus'
                 ]
             );
-    
+
     }
 
     public function sync($id, Request $request)
-      {
-          $category = Categories::findOrFail($id);
-          
-          $response = Http::post('https://api.phb-umkm.my.id/api/product-category/sync', [
-              'client_id' => env('CLIENT_ID'),
-              'client_secret' => env('CLIENT_SECRET'),
-              'seller_product_category_id' => (string) $category->id,
-              'name' => $category->name,
-              'description' => $category->description,
-              'is_active' => $request->is_active == 1 ? false : true,
-          ]);
-  
-          if ($response->successful() && isset($response['product_category_id'])) {
-              $category->hub_category_id = $request->is_active == 1 ? null : $response['product_category_id'];
-              $category->save();
-          }
-  
-          session()->flash('successMessage', 'Category Synced Successfully');
-          return redirect()->back();
-      }
+    {
+        $category = Categories::findOrFail($id);
+
+        // Determine the intended active state based on the request from the UI
+        // If $request->is_active is 1 (meaning the UI sent "ON"), then $intended_active_state should be true.
+        // If $request->is_active is 0 (meaning the UI sent "OFF"), then $intended_active_state should be false.
+        $intended_active_state = (bool) $request->is_active;
+
+        $response = Http::post('https://api.phb-umkm.my.id/api/product-category/sync', [
+            'client_id' => env('CLIENT_ID'),
+            'client_secret' => env('CLIENT_SECRET'),
+            'seller_product_category_id' => (string) $category->id,
+            'name' => $category->name,
+            'description' => $category->description,
+            'is_active' => $intended_active_state, // CORRECTED: Pass the actual intended state
+        ]);
+
+        // Always log the response to aid debugging, especially for non-200 responses
+        Log::info('API Category Sync Attempt for ID: ' . $id, [
+            'request_payload' => [
+                'client_id' => env('CLIENT_ID'), // Only include if necessary for debug, be careful with sensitive info
+                // 'client_secret' => '*****', // Don't log actual secret
+                'seller_product_category_id' => (string) $category->id,
+                'name' => $category->name,
+                'description' => $category->description,
+                'is_active' => $intended_active_state,
+            ],
+            'response_status' => $response->status(),
+            'response_body' => $response->body(),
+        ]);
+
+        if ($response->successful() && isset($response['product_category_id'])) {
+            // If the external API says it's successful AND returns an ID, update locally.
+            // If the intended state is active, save the ID. If inactive, set to null.
+            if ($intended_active_state) {
+                $category->hub_category_id = $response['product_category_id'];
+            } else {
+                $category->hub_category_id = null;
+            }
+            // Also update the local 'is_active' column if your 'categories' table has one
+            // Assuming you have an 'is_active' column in your 'categories' table to reflect the toggle state
+            $category->is_active = $intended_active_state;
+            $category->save();
+
+            session()->flash('successMessage', 'Category Synced Successfully');
+        } else {
+            // Handle API errors
+            $errorMessage = 'Failed to sync category with external API.';
+            $responseBody = $response->body();
+            if (!empty($responseBody)) {
+                // Attempt to parse JSON error if available
+                $jsonResponse = json_decode($responseBody, true);
+                if (json_last_error() === JSON_ERROR_NONE && isset($jsonResponse['message'])) {
+                    $errorMessage .= ' Error: ' . $jsonResponse['message'];
+                } else {
+                    $errorMessage .= ' Response: ' . $responseBody; // Fallback to raw response
+                }
+            }
+
+            Log::error('API Category Sync Failed for ID: ' . $id, [
+                'request_payload' => [
+                    'seller_product_category_id' => (string) $category->id,
+                    'is_active' => $intended_active_state,
+                ],
+                'response_status' => $response->status(),
+                'response_body' => $responseBody,
+                'error_message_for_user' => $errorMessage,
+            ]);
+
+            session()->flash('errorMessage', $errorMessage);
+        }
+
+        return redirect()->back();
+    }
 }
