@@ -24,8 +24,6 @@ Route::get('category/{slug}', [HomepageController::class, 'category']);
 Route::get('cart', [HomepageController::class, 'cart'])->name('cart.index');
 Route::get('checkout', [HomepageController::class, 'checkout'])->name('checkout.index');
 Route::get('/menus', [MenuController::class, 'index'])->name('menus.index');
-Route::post('products/sync/{id}', [ProductController::class, 'sync'])->name('products.sync');
-Route::post('category/sync/{id}', [ProductCategoryController::class, 'sync'])->name('category.sync');
 
 Route::group(['middleware'=>['is_customer_login']], function(){
     Route::controller(CartController::class)->group(function () {
@@ -55,7 +53,7 @@ Route::group(['prefix'=>'customer'], function(){
             //aksi register
             Route::post('register','store_register')->name('customer.store_register');
         });
-        
+
 
         //aksi logout
         Route::post('logout','logout')->name('customer.logout');
@@ -75,6 +73,8 @@ Route::group(['prefix'=>'dashboard','middleware'=>['auth','verified']], function
     Route::resource('products',ProductController::class);
     Route::resource('themes', ThemeController::class);
 
+    Route::post('products/sync/{id}', [ProductController::class, 'sync'])->name('products.sync');
+    Route::post('category/sync/{id}', [ProductCategoryController::class, 'sync'])->name('category.sync');
 });
 
 
